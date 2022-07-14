@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PdfActivityAndroid extends StatefulWidget {
-  final String path;
+  var file;
   final bool onlineAssets;
-  PdfActivityAndroid({Key? key, required this.path, required this.onlineAssets})
+  PdfActivityAndroid({Key? key, required this.file, required this.onlineAssets})
       : super(key: key);
 
   @override
@@ -68,7 +68,7 @@ class _PdfActivityAndroidState extends State<PdfActivityAndroid> {
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return OptionPanel(
-                  path: widget.path,
+                  path: widget.file,
                   isOnline: widget.onlineAssets,
                 );
               }));
@@ -84,12 +84,12 @@ class _PdfActivityAndroidState extends State<PdfActivityAndroid> {
   Widget makePDFView(bool onlineAssets) {
     if (onlineAssets) {
       return SfPdfViewer.network(
-        widget.path,
+        widget.file,
         controller: _controller,
       );
     } else {
-      return SfPdfViewer.asset(
-        widget.path,
+      return SfPdfViewer.file(
+        widget.file,
         controller: _controller,
       );
     }
@@ -108,7 +108,7 @@ class _PdfActivityAndroidState extends State<PdfActivityAndroid> {
         while (isPlaying) {
           _controller.jumpTo(
               xOffset: _controller.scrollOffset.dx,
-              yOffset: _controller.scrollOffset.dy + 2);
+              yOffset: _controller.scrollOffset.dy + offset!);
           await Future.delayed(Duration(milliseconds: duration!));
           if (_controller.pageCount == _controller.pageNumber) {
             setState(() {

@@ -1,3 +1,3 @@
 class Constants {
-  static String version = "0.1 alpha test";
+  static String version = "0.2 alpha test";
 }

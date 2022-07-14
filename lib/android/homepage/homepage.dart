@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:autoscrollpdf/android/pdf_activity/PdfActivity.dart';
 import 'package:autoscrollpdf/utily/Constants.dart';
 import 'package:file_picker/file_picker.dart';
@@ -25,10 +27,14 @@ class HomePageAndroid extends StatelessWidget {
                       .pickFiles(
                           type: FileType.custom, allowedExtensions: ['pdf']);
                   if (result != null) {
+                    PlatformFile pFile = result.files.first;
+                    File file = File(pFile.path!);
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
+                      print(pFile.name);
+                      print(pFile.path);
                       return PdfActivityAndroid(
-                          path: result.paths.first!, onlineAssets: false);
+                          file: file, onlineAssets: false);
                     }));
                   }
                 },
@@ -69,7 +75,7 @@ class HomePageAndroid extends StatelessWidget {
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
                         return PdfActivityAndroid(
-                            path: link, onlineAssets: true);
+                            file: link, onlineAssets: true);
                       }));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

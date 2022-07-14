@@ -3,8 +3,8 @@ import 'package:autoscrollpdf/android/pdf_activity/PdfActivity.dart';
 import 'package:flutter/material.dart';
 
 class OptionPanel extends StatefulWidget {
-  String path;
-  bool isOnline;
+  var path;
+  final bool isOnline;
   OptionPanel({Key? key, required this.path, required this.isOnline})
       : super(key: key);
 
@@ -77,7 +77,7 @@ class _OptionPanelState extends State<OptionPanel> {
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
                           return PdfActivityAndroid(
-                              path: widget.path, onlineAssets: widget.isOnline);
+                              file: widget.path, onlineAssets: widget.isOnline);
                         }));
                       },
                       icon: const Icon(
