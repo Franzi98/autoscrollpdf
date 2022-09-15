@@ -1,15 +1,16 @@
+import 'dart:ffi';
 import 'dart:io';
 
-import 'package:autoscrollpdf/Helper/ParametersHelper.dart';
+import 'package:autoscrollpdf/Classes/Song.dart';
+import 'package:autoscrollpdf/android/homepage/homepage.dart';
 import 'package:autoscrollpdf/android/otherActivity/OptionPanel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PdfActivityAndroid extends StatefulWidget {
-  var file;
-  final bool onlineAssets;
-  PdfActivityAndroid({Key? key, required this.file, required this.onlineAssets})
-      : super(key: key);
+  Song song;
+  PdfActivityAndroid({Key? key, required this.song}) : super(key: key);
 
   @override
   State<PdfActivityAndroid> createState() => _PdfActivityAndroidState();
@@ -18,17 +19,13 @@ class PdfActivityAndroid extends StatefulWidget {
 class _PdfActivityAndroidState extends State<PdfActivityAndroid> {
   bool isPlaying = false;
   late PdfViewerController _controller;
-  int? duration = 0;
-  double? offset = 0.0;
+  late int duration;
+  late double offset;
   @override
   void initState() {
     _controller = PdfViewerController();
-    duration = ParametersHelper.getDuration();
-    duration ??= 50;
-    offset = ParametersHelper.getOffset();
-    offset ??= 2.0;
-    //print(offset);
-    //print(duration);
+    duration = widget.song.duration;
+    offset = widget.song.offset;
     super.initState();
   }
 
@@ -36,68 +33,43 @@ class _PdfActivityAndroidState extends State<PdfActivityAndroid> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return exit(0);
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return const HomePageAndroid();
+        }));
+        return true;
+        //return exit(0);
       },
       child: Scaffold(
-          appBar: _makeAppBar(),
-          body: SafeArea(child: makePDFView(widget.onlineAssets)),
-          floatingActionButton: _makeFloatingActionButton()),
+          body: SafeArea(
+              child: SfPdfViewer.file(
+            widget.song.file,
+            controller: _controller,
+          )),
+          floatingActionButton: _makeSpeedDial()),
     );
   }
 
-  AppBar _makeAppBar() {
-    return AppBar(
-      actions: [
-        IconButton(
-            onPressed: () {
-              _controller.zoomLevel = _controller.zoomLevel + 0.25;
-            },
-            icon: const Icon(
-              Icons.zoom_in,
-              color: Colors.white,
-            )),
-        IconButton(
-            onPressed: () {
-              _controller.zoomLevel = _controller.zoomLevel - 0.25;
-            },
-            icon: const Icon(
-              Icons.zoom_out,
-              color: Colors.white,
-            )),
-        IconButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return OptionPanel(
-                  path: widget.file,
-                  isOnline: widget.onlineAssets,
-                );
-              }));
-            },
-            icon: const Icon(
-              Icons.settings,
-              color: Colors.white,
-            ))
+  SpeedDial _makeSpeedDial() {
+    return SpeedDial(
+      heroTag: "btn1",
+      renderOverlay: false,
+      direction: SpeedDialDirection.left,
+      children: [
+        _makeFlaotingActionButtonSettings(),
+        _makeFloatingActionButtonPlay(),
+        _makeFloatingActionButtonZoomIn(),
+        _makeFloatingActionButtonZoomOut(),
       ],
+      child: const Icon(
+        Icons.settings,
+        color: Colors.black,
+      ),
     );
   }
 
-  Widget makePDFView(bool onlineAssets) {
-    if (onlineAssets) {
-      return SfPdfViewer.network(
-        widget.file,
-        controller: _controller,
-      );
-    } else {
-      return SfPdfViewer.file(
-        widget.file,
-        controller: _controller,
-      );
-    }
-  }
-
-  FloatingActionButton _makeFloatingActionButton() {
-    return FloatingActionButton(
-      onPressed: () async {
+  SpeedDialChild _makeFloatingActionButtonPlay() {
+    return SpeedDialChild(
+      onTap: () async {
         setState(() {
           if (isPlaying) {
             isPlaying = false;
@@ -108,8 +80,8 @@ class _PdfActivityAndroidState extends State<PdfActivityAndroid> {
         while (isPlaying) {
           _controller.jumpTo(
               xOffset: _controller.scrollOffset.dx,
-              yOffset: _controller.scrollOffset.dy + offset!);
-          await Future.delayed(Duration(milliseconds: duration!));
+              yOffset: _controller.scrollOffset.dy + offset);
+          await Future.delayed(Duration(milliseconds: duration));
           if (_controller.pageCount == _controller.pageNumber) {
             setState(() {
               isPlaying = false;
@@ -120,12 +92,41 @@ class _PdfActivityAndroidState extends State<PdfActivityAndroid> {
       child: (isPlaying)
           ? const Icon(
               Icons.pause_circle,
-              color: Colors.white,
+              color: Colors.black,
             )
           : const Icon(
               Icons.play_circle,
-              color: Colors.white,
+              color: Colors.black,
             ),
+    );
+  }
+
+  SpeedDialChild _makeFlaotingActionButtonSettings() {
+    return SpeedDialChild(
+      child: const Icon(Icons.settings),
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (builder) {
+          return OptionPanel(song: widget.song);
+        }));
+      },
+    );
+  }
+
+  SpeedDialChild _makeFloatingActionButtonZoomIn() {
+    return SpeedDialChild(
+      child: const Icon(Icons.zoom_in),
+      onTap: () {
+        _controller.zoomLevel = _controller.zoomLevel + 0.25;
+      },
+    );
+  }
+
+  SpeedDialChild _makeFloatingActionButtonZoomOut() {
+    return SpeedDialChild(
+      child: const Icon(Icons.zoom_out),
+      onTap: () {
+        _controller.zoomLevel = _controller.zoomLevel - 0.25;
+      },
     );
   }
 }
