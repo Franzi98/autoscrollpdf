@@ -1,5 +1,6 @@
 import 'package:autoscrollpdf/Helper/ParametersHelper.dart';
 import 'package:autoscrollpdf/android/homepage/homepage.dart';
+import 'package:autoscrollpdf/widget/SongCard.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -16,7 +17,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
         //
