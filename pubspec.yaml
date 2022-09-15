@@ -32,6 +32,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^20.2.36-beta
   file_picker: ^4.6.1
   shared_preferences: ^2.0.15
+  flutter_speed_dial: ^6.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -61,8 +62,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+     - lib/assets/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
