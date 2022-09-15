@@ -1,12 +1,15 @@
+import 'package:autoscrollpdf/Classes/Song.dart';
+import 'package:autoscrollpdf/Helper/Functions.dart';
 import 'package:autoscrollpdf/Helper/ParametersHelper.dart';
 import 'package:autoscrollpdf/android/pdf_activity/PdfActivity.dart';
 import 'package:flutter/material.dart';
 
 class OptionPanel extends StatefulWidget {
-  var path;
-  final bool isOnline;
-  OptionPanel({Key? key, required this.path, required this.isOnline})
-      : super(key: key);
+  Song song;
+  OptionPanel({
+    Key? key,
+    required this.song,
+  }) : super(key: key);
 
   @override
   State<OptionPanel> createState() => _OptionPanelState();
@@ -15,30 +18,24 @@ class OptionPanel extends StatefulWidget {
 class _OptionPanelState extends State<OptionPanel> {
   String offset = "";
   String duration = "";
-  int cronologia = 0;
   @override
   void initState() {
     super.initState();
-    duration = ParametersHelper.getDuration().toString();
-    offset = ParametersHelper.getOffset().toString();
+    duration = widget.song.duration.toString();
+    offset = widget.song.offset.toString();
   }
 
-  Future _saveData(String key, double x) {
+  void _saveData(String key, double x) {
     if (key == "Duration") {
       setState(() {
         duration = x.toString();
       });
-      return ParametersHelper.setDuration(x.toInt());
+      widget.song.setDuration(x.round());
     } else if (key == "Offset") {
       setState(() {
         offset = x.toString();
       });
-      return ParametersHelper.setOffset(x);
-    } else {
-      setState(() {
-        cronologia = x.toInt();
-      });
-      return ParametersHelper.setListLength(x.toInt());
+      widget.song.setOffset(x);
     }
   }
 
@@ -74,10 +71,14 @@ class _OptionPanelState extends State<OptionPanel> {
                   ElevatedButton.icon(
                       onPressed: () {
                         _saveData(key, _input);
+                        ParametersHelper.delete(
+                            Functions.makeTitle(widget.song.path));
+                        ParametersHelper.saveSong(widget.song);
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
                           return PdfActivityAndroid(
-                              file: widget.path, onlineAssets: widget.isOnline);
+                            song: widget.song,
+                          );
                         }));
                       },
                       icon: const Icon(
@@ -113,20 +114,25 @@ class _OptionPanelState extends State<OptionPanel> {
       title: const Text("Moltiplicatore Offset"),
       subtitle: Text(offset),
       onTap: () {
-        openDialog(context, "Offset");
+        openDialog(
+          context,
+          "Offset",
+        );
       },
     );
   }
 
-  ListTile _makeTileHistory(BuildContext context, int cronologia) {
+  ListTile _makeTileTags(BuildContext context, List tags) {
     return ListTile(
       leading: const Icon(
-        Icons.history,
+        Icons.tag,
         color: Colors.white,
       ),
-      title: const Text("Cronologia Documenti"),
-      subtitle: const Text("Funzione non abilitata"),
-      onTap: () => openDialog(context, "Cronologia"),
+      title: const Text("Tags"),
+      subtitle: Text(tags.toString()),
+      onTap: () {
+        openDialog(context, "Tags");
+      },
     );
   }
 
@@ -135,8 +141,8 @@ class _OptionPanelState extends State<OptionPanel> {
       return "Inserisci intervallo di scorrimento";
     } else if (key == "Offset") {
       return "Inserisci offset di scorrimento";
-    } else if (key == "Cronologia") {
-      return "Inserisci numero di file da visualizzare";
+    } else if (key == "Tags") {
+      return "Inserisci tag";
     }
   }
 
@@ -156,7 +162,7 @@ class _OptionPanelState extends State<OptionPanel> {
             color: Colors.black,
             thickness: 2,
           ),
-          _makeTileHistory(context, cronologia)
+          _makeTileTags(context, widget.song.tags)
         ],
       ),
     ));
