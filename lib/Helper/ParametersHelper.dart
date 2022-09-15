@@ -1,4 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
+import '../Classes/Song.dart';
 
 class ParametersHelper {
   static late SharedPreferences _pref;
@@ -7,34 +10,42 @@ class ParametersHelper {
     _pref = await SharedPreferences.getInstance();
   }
 
-  static Future setDuration(int duration) async {
-    await _pref.setInt("Duration", duration);
+  /*
+  input: Song
+  output: salva in formato json l'input
+  */
+  static Future saveSong(Song song) async {
+    String json = jsonEncode(song.toJson());
+    return _pref.setString(song.title, json);
   }
 
-  static int? getDuration() {
-    return _pref.getInt("Duration");
+  /*
+  input: key
+  output: instanza della classe song convertita da json
+  */
+  static Song getSong(String key) {
+    Map json = jsonDecode(_pref.getString(key)!);
+    return Song.fromJson(json);
   }
 
-  static Future setOffset(double offset) async {
-    await _pref.setDouble("Offset", offset);
+  static List<Song> getSongs() {
+    List<Song> songs = [];
+    ParametersHelper.getKeys().forEach((element) {
+      songs.add(getSong(element));
+    });
+    return songs;
   }
 
-  static double? getOffset() {
-    return _pref.getDouble("Offset");
+  //ritorna tutte le chiavi salvate iin memoria
+  static Set<String> getKeys() {
+    return _pref.getKeys();
   }
 
-  static Future setStringList(String path) async {
-    List<String>? temp = getStringList();
-    List<String> giusta = temp!;
-    giusta.add(path);
-    await _pref.setStringList("Cronologia", giusta);
+  static void delete(String key) {
+    _pref.remove(key);
   }
 
-  static List<String>? getStringList() {
-    return _pref.getStringList("Cronologia");
-  }
-
-  static Future setListLength(int length) async {
-    await _pref.setInt("Lunghezza", length);
+  static void deleteAll() {
+    _pref.clear();
   }
 }
