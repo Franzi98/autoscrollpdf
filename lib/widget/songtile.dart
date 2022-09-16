@@ -16,7 +16,7 @@ class SongTile extends StatelessWidget {
           return PdfActivityAndroid(song: song);
         })),
         child: ListTile(
-          leading: FlutterLogo(),
+          leading: const Icon(Icons.picture_as_pdf),
           title: Text(song.title),
           subtitle: Text(song.path),
         ),
