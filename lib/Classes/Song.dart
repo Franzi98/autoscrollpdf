@@ -52,10 +52,34 @@ class Song {
     return title;
   }
 
-  List<String> get getTags {
-    return tags;
+  List<String> get getTagsAsString {
+    List<String> tempTags = [];
+    if (tags.isEmpty) {
+      return ["noTags"];
+    } else {
+      tags.forEach((element) {
+        List<String> path = element.split('.');
+        tempTags.add(path.last);
+      });
+      return tempTags;
+    }
   }
 
+/*
+
+  List<TAGS> get getTagsAsTags {
+    if (tags.isEmpty) {
+      return [TAGS.notag];
+    } else {
+      List<TAGS> tempTags = [];
+      tags.forEach((element) {
+        if(element == ""){
+          
+        }
+      });
+    }
+  }
+*/
   set setTitle(String title) {
     //quando inserisco un tag allora elimino il notag
     if (tags.contains("notags")) {
@@ -69,10 +93,11 @@ class Song {
   }
 
   void addTag(String tag) {
-    tags.add(tag.toString());
+    tags.add(tag);
   }
 
   void removeTag(String tag) {
+    //aggiunge notags se i tag sono vuoti dopo la cancellazione
     tags.remove(tag);
     if (tags.isEmpty) {
       tags.add("notags");
