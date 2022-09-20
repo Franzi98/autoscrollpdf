@@ -9,21 +9,21 @@ class TagsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.red, width: 1.5),
-      ),
-      width: 250,
-      height: 100,
+    return Card(
       child: InkWell(
         onLongPress: () =>
             ScaffoldMessenger.of(context).showSnackBar(_deleteSnackBar(song)),
         child: Center(
-          child: Text(
-            "#$tag",
-            style: const TextStyle(
-                color: Colors.black, fontSize: 20, fontStyle: FontStyle.italic),
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: Text(
+              "#$tag",
+              softWrap: false,
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontStyle: FontStyle.italic),
+            ),
           ),
         ),
       ),
@@ -37,7 +37,7 @@ class TagsCard extends StatelessWidget {
       action: SnackBarAction(
           label: "Undo",
           onPressed: () {
-            song.addTag(tag);
+            song.removeTag(tag);
           }),
     );
   }
