@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:autoscrollpdf/android/pdf_activity/PdfActivity.dart';
-import 'package:autoscrollpdf/widget/SongCardDialog.dart';
+import 'package:autoscrollpdf/android/dialog/SongCardDialog.dart';
 import 'package:flutter/material.dart';
 
 import '../Classes/Song.dart';
