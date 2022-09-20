@@ -22,6 +22,7 @@ You can use this app **offline** but you can open a online PDF document in the w
 **flutter_speed_dial: ^6.0.0**: to open multiple floatingactionbuttons
 **json_serializable: ^6.3.1**: to encode/decode file
 **build_runner: ^2.2.0**: to generate file
+**chips_choice: ^2.0.1**: to add multiple tags in one time
 
 ## Change preferences
 
@@ -30,6 +31,6 @@ Tags help you to search immediatly PDFs, Scrolling time allow to improve e decre
 
 ## TODO
 
- -[ ] Open Online Document
- -[ ] Add history Documents
+ -[X] Open Online Document
+ -[X] Add history Documents
  -[X] Save PDF
