@@ -6,6 +6,9 @@ import 'package:autoscrollpdf/utily/tags.dart';
 
 class Song {
   //non è necessario convertire la classe file, basta la stringa path
+
+  //title è anche la chiave dell'oggetto salvato in shared preferences,
+  //ogni volta che si cambia il titolo viene creato una nuova istanza di song con key = title;
   late String title;
   String path;
   late int duration;
@@ -80,20 +83,22 @@ class Song {
     }
   }
 */
-  set setTitle(String title) {
-    //quando inserisco un tag allora elimino il notag
-    if (tags.contains("notags")) {
-      tags.remove("notags");
-    }
-    title = title;
+  void addTitle(String title) {
+    this.title = title;
   }
 
   void setOffset(double x) {
     offset = x;
   }
 
-  void addTag(String tag) {
-    tags.add(tag);
+  void addTag(List<String> tag) {
+    //quando inserisco un tag allora elimino il notag
+    if (tags.contains("notags")) {
+      tags.remove("notags");
+    }
+    for (int i = 0; i < tags.length; i++) {
+      tags.add(tag[i]);
+    }
   }
 
   void removeTag(String tag) {
