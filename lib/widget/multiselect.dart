@@ -2,16 +2,18 @@ import 'package:autoscrollpdf/utily/tags.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 
+import '../Helper/Functions.dart';
+
 class MultiSelect extends StatefulWidget {
-  MultiSelect({Key? key}) : super(key: key);
+  List<String> selectedTags;
+  MultiSelect({Key? key, required this.selectedTags}) : super(key: key);
 
   @override
   State<MultiSelect> createState() => _MultiSelectState();
 }
 
 class _MultiSelectState extends State<MultiSelect> {
-  List<TAGS> selectedTags = [];
-  List<TAGS> tags = TAGS.values;
+  List<String> tags = Functions.listTagsToListString(TAGS.values);
   bool isSelect = false;
   @override
   Widget build(BuildContext context) {
@@ -38,11 +40,11 @@ class _MultiSelectState extends State<MultiSelect> {
   }
 
   ChipsChoice _makeChipsChoices() {
-    return ChipsChoice<TAGS>.multiple(
-        value: selectedTags,
+    return ChipsChoice<String>.multiple(
+        value: widget.selectedTags,
         onChanged: (val) {
           setState(() {
-            selectedTags = val;
+            widget.selectedTags = val;
           });
         },
         choiceItems: C2Choice.listFrom(
