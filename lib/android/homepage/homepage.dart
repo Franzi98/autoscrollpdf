@@ -17,35 +17,40 @@ class HomePageAndroid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String text = ParametersHelper.getKeys().toString();
-    return Scaffold(
-      floatingActionButton: Row(
-        children: [
-          const SizedBox(
-            width: 20,
-          ),
-          _floatingActionButtonOnline(context),
-          const Spacer(),
-          _floatingActionButtonLocal(context)
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            _makeImage(),
-            _makeFolderCard(),
+    return
+        // ignore: sort_child_properties_last
+        Scaffold(
+            appBar: _homeAppBar(),
+            floatingActionButton: Row(
+              children: [
+                const SizedBox(
+                  width: 20,
+                ),
+                _floatingActionButtonOnline(context),
+                const Spacer(),
+                _floatingActionButtonLocal(context)
+              ],
+            ),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _makeImage(),
+                    _makeFolderCard(),
 
-            SingleChildScrollView(
-                child: _makeGridView(ParametersHelper.getSongs(), context)),
-            //Divider(),
-            //Padding(
-            //  padding: const EdgeInsets.all(15),
-            //  child: Text(text),
-            //),
-            Text(Constants.version)
-          ],
-        ),
-      ),
-    );
+                    SingleChildScrollView(
+                        child: _makeGridView(
+                            ParametersHelper.getSongs(), context)),
+                    //Divider(),
+                    //Padding(
+                    //  padding: const EdgeInsets.all(15),
+                    //  child: Text(text),
+                    //),
+                    Text(Constants.version)
+                  ],
+                ),
+              ),
+            ));
   }
 
   /*
@@ -173,8 +178,18 @@ class HomePageAndroid extends StatelessWidget {
         },
       ),
       actions: [
-        ElevatedButton(onPressed: () {}, child: const Text("Apri")),
-        ElevatedButton(onPressed: () {}, child: const Text("Chiudi"))
+        ElevatedButton(
+            onPressed: () {
+              //creare un page con pdf da web
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Funzione non abilitata")));
+            },
+            child: const Text("Apri")),
+        ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Chiudi"))
       ],
     );
   }
@@ -209,5 +224,12 @@ class HomePageAndroid extends StatelessWidget {
                 img: Image.asset("lib/assets/other.png"), tag: TAGS.notag)
           ],
         ));
+  }
+
+  AppBar _homeAppBar() {
+    return AppBar(
+      leading: const Icon(Icons.exit_to_app),
+      title: const Text("Home Page"),
+    );
   }
 }
