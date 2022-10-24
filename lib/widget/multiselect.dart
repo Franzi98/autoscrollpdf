@@ -6,7 +6,12 @@ import '../Helper/Functions.dart';
 
 class MultiSelect extends StatefulWidget {
   List<String> selectedTags;
-  MultiSelect({Key? key, required this.selectedTags}) : super(key: key);
+  void Function(List<String>) onSaveButton;
+  MultiSelect({
+    Key? key,
+    required this.selectedTags,
+    required this.onSaveButton,
+  }) : super(key: key);
 
   @override
   State<MultiSelect> createState() => _MultiSelectState();
@@ -14,6 +19,7 @@ class MultiSelect extends StatefulWidget {
 
 class _MultiSelectState extends State<MultiSelect> {
   List<String> tags = Functions.listTagsToListString(TAGS.values);
+
   bool isSelect = false;
   @override
   Widget build(BuildContext context) {
@@ -24,16 +30,7 @@ class _MultiSelectState extends State<MultiSelect> {
           children: [
             _makeChipsChoices(),
             Row(
-              children: [
-                ElevatedButton.icon(
-                    onPressed: (() => Navigator.pop(context)),
-                    icon: const Icon(Icons.delete),
-                    label: const Text("Cancella")),
-                ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.save),
-                    label: const Text("Salva"))
-              ],
+              children: [_cancelButton(), const Spacer(), _saveButton()],
             )
           ],
         ));
@@ -53,5 +50,24 @@ class _MultiSelectState extends State<MultiSelect> {
               return tags[i];
             },
             label: (i, v) => v.toString()));
+  }
+
+  ElevatedButton _saveButton() {
+    return ElevatedButton.icon(
+        onPressed: () {
+          widget.onSaveButton(widget.selectedTags);
+          Navigator.pop(context);
+        },
+        icon: const Icon(Icons.save),
+        label: const Text("Salva"));
+  }
+
+  ElevatedButton _cancelButton() {
+    return ElevatedButton.icon(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: const Icon(Icons.cancel),
+        label: const Text("Cancella"));
   }
 }
