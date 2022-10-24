@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Constants {
-  static String version = "0.3 alpha test";
+  static String version = "0.1 Beta";
 
   static String duration = "Lentezza Scorrimento";
   static String offset = "Offset";
