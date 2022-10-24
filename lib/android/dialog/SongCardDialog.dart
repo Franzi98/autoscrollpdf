@@ -25,6 +25,10 @@ class _SongCardDialogState extends State<SongCardDialog> {
   @override
   void initState() {
     widget.preferencesKey = widget.song.title;
+    widget.title = widget.song.title;
+    widget.offset = widget.song.offset;
+    widget.duration = widget.song.duration;
+    widget.tags = widget.song.tags;
     super.initState();
   }
 
@@ -208,6 +212,10 @@ class _SongCardDialogState extends State<SongCardDialog> {
         iconSize: 35,
         onPressed: () {
           _saveSong();
+          print(widget.song.offset);
+          print(widget.song.duration);
+          print(widget.song.title);
+          print(widget.song.tags);
           Navigator.of(context).push(MaterialPageRoute(builder: (builder) {
             return const HomePageAndroid();
           }));
@@ -229,22 +237,32 @@ class _SongCardDialogState extends State<SongCardDialog> {
     );
   }
 
+  //check if title, duration, offset and tags are changed and save it.
   void _saveSong() {
     if (widget.title != widget.song.title) {
       widget.song.addTitle(widget.title);
+    } else {
+      widget.song.addTitle(widget.song.title);
     }
     if (widget.duration != widget.song.duration) {
       widget.song.setDuration(widget.duration);
+    } else {
+      widget.song.setDuration(widget.song.duration);
     }
     if (widget.offset != widget.song.offset) {
       widget.song.setOffset(widget.offset);
+    } else {
+      widget.song.setOffset(widget.song.offset);
     }
     //da finire il caso della lista di tag
     if (widget.tags.isNotEmpty) {
+      print("Tag da aggiungere:" + widget.tags.toString());
       widget.song.addTag(widget.tags);
+    } else {
+      widget.song.addTag(widget.song.tags);
     }
-    ParametersHelper.saveSong(widget.song);
     ParametersHelper.delete(widget.preferencesKey);
+    ParametersHelper.saveSong(widget.song);
   }
 
   _showAddTagDialog(BuildContext context, List<String> selectedTags) {
@@ -252,9 +270,12 @@ class _SongCardDialogState extends State<SongCardDialog> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("Aggiungi tag"),
+            title: const Center(child: Text("Aggiungi tag")),
             content: MultiSelect(
               selectedTags: selectedTags,
+              onSaveButton: (tags) {
+                widget.tags = tags;
+              },
             ),
           );
         });

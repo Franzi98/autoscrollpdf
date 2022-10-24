@@ -228,8 +228,12 @@ class HomePageAndroid extends StatelessWidget {
 
   AppBar _homeAppBar() {
     return AppBar(
-      leading: const Icon(Icons.exit_to_app),
-      title: const Text("Home Page"),
-    );
+        leading: IconButton(
+            icon: Icon(
+              Icons.exit_to_app,
+            ),
+            onPressed: (() {
+              exit(0);
+            })));
   }
 }

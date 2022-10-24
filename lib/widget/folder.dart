@@ -1,3 +1,4 @@
+import 'package:autoscrollpdf/android/otherActivity/listsongs.dart';
 import 'package:autoscrollpdf/utily/tags.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,10 @@ class FolderCard extends StatelessWidget {
           side: BorderSide(width: 3),
           borderRadius: BorderRadius.all(Radius.circular(20))),
       child: InkWell(
-        //onTap: () => Navigator.of(context).push(),
+        onTap: () =>
+            Navigator.of(context).push(MaterialPageRoute(builder: (buider) {
+          return ListSongs(tag: tag, img: img);
+        })),
         child: Container(
           width: MediaQuery.of(context).size.width / 4,
           height: MediaQuery.of(context).size.height / 7,
