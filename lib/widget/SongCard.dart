@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:autoscrollpdf/Helper/Functions.dart';
 import 'package:autoscrollpdf/android/pdf_activity/PdfActivity.dart';
 import 'package:autoscrollpdf/android/dialog/SongCardDialog.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +18,12 @@ class SongCard extends StatelessWidget {
     //double larghezza = MediaQuery.of(context).size.width;
     return Card(
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(15),
           side: const BorderSide(
             color: Colors.black,
-            width: 2,
+            width: 1.5,
           )),
-      color: Colors.white,
+      color: Colors.white70,
       shadowColor: const Color.fromARGB(255, 0, 0, 0),
       child: InkWell(
         onTap: (() {

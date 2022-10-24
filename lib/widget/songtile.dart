@@ -10,6 +10,7 @@ class SongTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 8,
       child: InkWell(
         onTap: () =>
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
@@ -19,6 +20,8 @@ class SongTile extends StatelessWidget {
           leading: const Icon(Icons.picture_as_pdf),
           title: Text(song.title),
           subtitle: Text(song.path),
+          dense: true,
+          trailing: const Icon(Icons.arrow_forward),
         ),
       ),
     );
