@@ -33,4 +33,13 @@ Tags help you to search immediatly PDFs, Scrolling time allow to improve e decre
 
  -[X] Open Online Document
  -[X] Add history Documents
+ 
  -[X] Save PDF
+
+
+##PROBLEM TO SOLVE: 
+- [] In Function class, create a method that return a difference beetween two list(deprecated)
+- [] Delete a tag in SongCardDialog or directly from SongCard
+
+##FEATURES TO ADD: 
+- [] Save online file
