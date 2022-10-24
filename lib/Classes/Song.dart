@@ -93,12 +93,12 @@ class Song {
 
   void addTag(List<String> tag) {
     //quando inserisco un tag allora elimino il notag
-    if (tags.contains("notags")) {
-      tags.remove("notags");
-    }
-    for (int i = 0; i < tags.length; i++) {
+    tags.clear();
+    for (int i = 0; i <= tag.length - 1; i++) {
+      print("tag aggiunto: ${tag[i]}");
       tags.add(tag[i]);
     }
+    tags.remove("notag");
   }
 
   void removeTag(String tag) {
