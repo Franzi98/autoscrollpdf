@@ -20,7 +20,7 @@ You can use this app **offline** but you can open a online PDF document in the w
 
 ## Change preferences
 
-In PDF screen, in the AppBar there is a setting Icon. Pressing it, you can change how much quickly PDF have to scroll and the scrolling offset. This values is stored in the device.
+From PDF screen, inonhe AppBar there is a setting Icon. Pressing it, you can change how much quickly PDF have to scroll and the scrolling offset. This values is stored in the device.
 
 ## TODO
 
